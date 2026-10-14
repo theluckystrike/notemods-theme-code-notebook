@@ -1,0 +1,521 @@
+/* ==========================================================================
+   Code Notebook — an Obsidian app theme
+   Design system: "paper + ink + amber".
+   Warm paper in light mode, cool slate in dark mode, amber accent.
+   Structural signature: notebook "cells" — fenced code gets a raised cell with
+   an amber rule, headings sit on faint cell dividers, callouts read as labelled
+   asides, tasks use square checkboxes.
+   Original CSS by U3 Theme Factory. MIT licensed. No remote assets.
+   Requires core variables introduced through Obsidian 1.1 (callout variables).
+   ========================================================================== */
+
+/* ---------- shared tokens (both modes) ---------------------------------- */
+body {
+  --cn-accent-h: 34;
+  --cn-radius: 3px;
+  --cn-radius-sm: 2px;
+
+  --font-text-theme: "Iowan Old Style", "Palatino Linotype", Palatino,
+    "Book Antiqua", Georgia, ui-serif, serif;
+  --font-interface-theme: ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-monospace-theme: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  --font-text-size: 16.5px;
+  --font-monospace-size: 13.5px;
+  --line-height-normal: 1.65;
+  --line-height-tight: 1.3;
+
+  --h1-size: 1.9em;
+  --h2-size: 1.5em;
+  --h3-size: 1.24em;
+  --h4-size: 1.08em;
+  --h5-size: 0.98em;
+  --h6-size: 0.9em;
+  --h1-weight: 700;
+  --h2-weight: 700;
+  --h3-weight: 650;
+  --h4-weight: 650;
+  --h5-weight: 600;
+  --h6-weight: 600;
+
+  --bold-weight: 700;
+  --tag-size: 0.8em;
+  --checkbox-size: 1.05em;
+  --checkbox-radius: 2px;
+  --radius-s: var(--cn-radius-sm);
+  --radius-m: var(--cn-radius);
+  --radius-l: 6px;
+
+  --code-size: var(--font-monospace-size);
+  --code-line-height: 1.62;
+  --table-header-weight: 650;
+  --table-text-size: 0.94em;
+
+  --link-decoration: underline;
+  --link-decoration-hover: underline;
+  --link-decoration-thickness: 1px;
+  --link-unresolved-opacity: 0.55;
+  --link-unresolved-decoration-style: dotted;
+
+  --input-hover-border-color: var(--cn-rule);
+  --input-focus-border-color: var(--cn-accent);
+}
+
+/* ---------- dark mode --------------------------------------------------- */
+.theme-dark {
+  --cn-paper: #1e2024;
+  --cn-paper-2: #17191c;
+  --cn-paper-3: #202327;
+  --cn-ink: #e6e6e3;
+  --cn-ink-muted: #a9adb3;
+  --cn-ink-faint: #71777f;
+  --cn-rule: #33373d;
+  --cn-accent: #e0a458;
+  --cn-accent-strong: #f0b869;
+  --cn-link: #f0b869;
+  --cn-link-hover: #ffd28a;
+  --cn-cell: #14161a;
+  --cn-code-bg: #14161a;
+  --cn-code-text: #dcdcd6;
+  --cn-code-comment: #8a9099;
+  --cn-code-keyword: #e0a458;
+  --cn-code-string: #9ecb8a;
+  --cn-code-fn: #7fb6d9;
+  --cn-code-num: #d9a3d9;
+  --cn-selection: #4a3a1e;
+  --cn-highlight: rgba(224, 164, 88, 0.30);
+
+  --background-primary: var(--cn-paper);
+  --background-primary-alt: var(--cn-paper-3);
+  --background-secondary: var(--cn-paper-2);
+  --background-secondary-alt: var(--cn-paper-3);
+  --background-modifier-border: var(--cn-rule);
+  --background-modifier-border-hover: #434850;
+  --background-modifier-border-focus: var(--cn-accent);
+  --background-modifier-hover: rgba(255, 255, 255, 0.05);
+  --background-modifier-active-hover: rgba(255, 255, 255, 0.09);
+  --background-modifier-form-field: var(--cn-paper-2);
+  --background-modifier-cover: rgba(10, 11, 13, 0.85);
+
+  --text-normal: var(--cn-ink);
+  --text-muted: var(--cn-ink-muted);
+  --text-faint: var(--cn-ink-faint);
+  --text-on-accent: #201705;
+  --text-accent: var(--cn-accent-strong);
+  --text-accent-hover: var(--cn-link-hover);
+  --text-selection: var(--cn-selection);
+  --text-highlight-bg: var(--cn-highlight);
+
+  --interactive-normal: #26292e;
+  --interactive-hover: #2e3238;
+  --interactive-accent: var(--cn-accent);
+  --interactive-accent-hover: var(--cn-accent-strong);
+
+  --link-color: var(--cn-link);
+  --link-color-hover: var(--cn-link-hover);
+  --link-external-color: var(--cn-link);
+  --link-external-color-hover: var(--cn-link-hover);
+  --link-unresolved-color: var(--cn-ink-faint);
+
+  --tag-color: var(--cn-accent-strong);
+  --tag-background: rgba(224, 164, 88, 0.14);
+  --tag-background-hover: rgba(224, 164, 88, 0.24);
+  --tag-color-hover: var(--cn-accent-strong);
+
+  --code-background: var(--cn-code-bg);
+  --code-normal: var(--cn-code-text);
+  --code-comment: var(--cn-code-comment);
+  --code-function: var(--cn-code-fn);
+  --code-important: var(--cn-accent-strong);
+  --code-keyword: var(--cn-code-keyword);
+  --code-operator: var(--cn-code-text);
+  --code-property: var(--cn-code-fn);
+  --code-punctuation: var(--cn-code-comment);
+  --code-string: var(--cn-code-string);
+  --code-tag: var(--cn-code-keyword);
+  --code-value: var(--cn-code-num);
+
+  --table-border-color: var(--cn-rule);
+  --table-header-background: rgba(224, 164, 88, 0.10);
+  --table-header-background-hover: rgba(224, 164, 88, 0.14);
+  --table-row-background-hover: rgba(255, 255, 255, 0.045);
+  --table-selection: rgba(224, 164, 88, 0.22);
+  --table-selection-border-color: var(--cn-accent);
+
+  --checkbox-border-color: #4a4f57;
+  --checkbox-border-color-hover: var(--cn-accent);
+  --checkbox-color: var(--cn-accent);
+  --checkbox-color-hover: var(--cn-accent-strong);
+  --checkbox-marker-color: #201705;
+  --checklist-done-color: var(--cn-ink-faint);
+
+  --nav-item-color: var(--cn-ink-muted);
+  --nav-item-color-hover: var(--cn-ink);
+  --nav-item-color-active: var(--cn-ink);
+  --nav-item-background-hover: rgba(255, 255, 255, 0.05);
+  --nav-item-background-active: rgba(224, 164, 88, 0.16);
+  --nav-item-color-selected: var(--cn-accent-strong);
+  --nav-indentation-guide-color: #2b2f35;
+
+  --tab-text-color: var(--cn-ink-muted);
+  --tab-text-color-focused: var(--cn-ink);
+  --tab-text-color-focused-active: var(--cn-ink);
+  --tab-background-active: var(--cn-paper);
+  --tab-outline-color: var(--cn-rule);
+
+  --ribbon-background: var(--cn-paper-2);
+  --titlebar-background: var(--cn-paper-2);
+  --titlebar-background-focused: var(--cn-paper-2);
+  --status-bar-background: var(--cn-paper-2);
+  --status-bar-text-color: var(--cn-ink-muted);
+  --divider-color: var(--cn-rule);
+  --scrollbar-thumb-bg: #3a3e45;
+  --scrollbar-active-thumb-bg: #4d525a;
+  --modal-background: var(--cn-paper-3);
+  --modal-border-color: var(--cn-rule);
+}
+
+/* ---------- light mode -------------------------------------------------- */
+.theme-light {
+  --cn-paper: #fbf8f1;
+  --cn-paper-2: #f3eee3;
+  --cn-paper-3: #f6f2e8;
+  --cn-ink: #2b2b28;
+  --cn-ink-muted: #5f5c55;
+  --cn-ink-faint: #8b877d;
+  --cn-rule: #ddd6c6;
+  --cn-accent: #a05e00;
+  --cn-accent-strong: #8a4b00;
+  --cn-link: #8a4b00;
+  --cn-link-hover: #6d3b00;
+  --cn-cell: #f6f2e8;
+  --cn-code-bg: #f4efe2;
+  --cn-code-text: #33322d;
+  --cn-code-comment: #7a776c;
+  --cn-code-keyword: #8a4b00;
+  --cn-code-string: #3d6b2f;
+  --cn-code-fn: #25566f;
+  --cn-code-num: #7a3b74;
+  --cn-selection: #f3dfb0;
+  --cn-highlight: rgba(224, 164, 88, 0.35);
+
+  --background-primary: var(--cn-paper);
+  --background-primary-alt: var(--cn-paper-3);
+  --background-secondary: var(--cn-paper-2);
+  --background-secondary-alt: var(--cn-paper-3);
+  --background-modifier-border: var(--cn-rule);
+  --background-modifier-border-hover: #c9c0ac;
+  --background-modifier-border-focus: var(--cn-accent);
+  --background-modifier-hover: rgba(43, 43, 40, 0.05);
+  --background-modifier-active-hover: rgba(43, 43, 40, 0.09);
+  --background-modifier-form-field: #fffdf8;
+  --background-modifier-cover: rgba(60, 55, 45, 0.55);
+
+  --text-normal: var(--cn-ink);
+  --text-muted: var(--cn-ink-muted);
+  --text-faint: var(--cn-ink-faint);
+  --text-on-accent: #fffdf8;
+  --text-accent: var(--cn-accent-strong);
+  --text-accent-hover: var(--cn-link-hover);
+  --text-selection: var(--cn-selection);
+  --text-highlight-bg: var(--cn-highlight);
+
+  --interactive-normal: #f0ebdd;
+  --interactive-hover: #e9e2d0;
+  --interactive-accent: #a05e00;
+  --interactive-accent-hover: #8a4b00;
+
+  --link-color: var(--cn-link);
+  --link-color-hover: var(--cn-link-hover);
+  --link-external-color: var(--cn-link);
+  --link-external-color-hover: var(--cn-link-hover);
+  --link-unresolved-color: var(--cn-ink-faint);
+
+  --tag-color: var(--cn-accent-strong);
+  --tag-background: rgba(160, 94, 0, 0.12);
+  --tag-background-hover: rgba(160, 94, 0, 0.20);
+  --tag-color-hover: var(--cn-accent-strong);
+
+  --code-background: var(--cn-code-bg);
+  --code-normal: var(--cn-code-text);
+  --code-comment: var(--cn-code-comment);
+  --code-function: var(--cn-code-fn);
+  --code-important: var(--cn-accent-strong);
+  --code-keyword: var(--cn-code-keyword);
+  --code-operator: var(--cn-code-text);
+  --code-property: var(--cn-code-fn);
+  --code-punctuation: var(--cn-code-comment);
+  --code-string: var(--cn-code-string);
+  --code-tag: var(--cn-code-keyword);
+  --code-value: var(--cn-code-num);
+
+  --table-border-color: var(--cn-rule);
+  --table-header-background: rgba(160, 94, 0, 0.09);
+  --table-header-background-hover: rgba(160, 94, 0, 0.13);
+  --table-row-background-hover: rgba(43, 43, 40, 0.04);
+  --table-selection: rgba(160, 94, 0, 0.18);
+  --table-selection-border-color: var(--cn-accent);
+
+  --checkbox-border-color: #b3ab97;
+  --checkbox-border-color-hover: var(--cn-accent);
+  --checkbox-color: var(--cn-accent);
+  --checkbox-color-hover: var(--cn-accent-strong);
+  --checkbox-marker-color: #fffdf8;
+  --checklist-done-color: var(--cn-ink-faint);
+
+  --nav-item-color: var(--cn-ink-muted);
+  --nav-item-color-hover: var(--cn-ink);
+  --nav-item-color-active: var(--cn-ink);
+  --nav-item-background-hover: rgba(43, 43, 40, 0.05);
+  --nav-item-background-active: rgba(160, 94, 0, 0.12);
+  --nav-item-color-selected: var(--cn-accent-strong);
+  --nav-indentation-guide-color: #e0d9c9;
+
+  --tab-text-color: var(--cn-ink-muted);
+  --tab-text-color-focused: var(--cn-ink);
+  --tab-text-color-focused-active: var(--cn-ink);
+  --tab-background-active: var(--cn-paper);
+  --tab-outline-color: var(--cn-rule);
+
+  --ribbon-background: var(--cn-paper-2);
+  --titlebar-background: var(--cn-paper-2);
+  --titlebar-background-focused: var(--cn-paper-2);
+  --status-bar-background: var(--cn-paper-2);
+  --status-bar-text-color: var(--cn-ink-muted);
+  --divider-color: var(--cn-rule);
+  --scrollbar-thumb-bg: #d3cbba;
+  --scrollbar-active-thumb-bg: #bfb6a1;
+  --modal-background: #fffdf8;
+  --modal-border-color: var(--cn-rule);
+}
+
+/* ---------- headings: cell header rules -------------------------------- */
+.markdown-rendered h1,
+.markdown-preview-view h1,
+.cm-line.HyperMD-header-1 {
+  letter-spacing: -0.01em;
+  padding-bottom: 0.18em;
+  border-bottom: 2px solid var(--cn-accent);
+}
+.markdown-rendered h2,
+.markdown-preview-view h2,
+.cm-line.HyperMD-header-2 {
+  padding-bottom: 0.14em;
+  border-bottom: 1px solid var(--cn-rule);
+}
+.markdown-rendered h3,
+.markdown-preview-view h3 {
+  color: var(--cn-accent-strong);
+}
+.markdown-rendered h4,
+.markdown-preview-view h4,
+.markdown-rendered h5,
+.markdown-preview-view h5,
+.markdown-rendered h6,
+.markdown-preview-view h6 {
+  text-transform: none;
+  color: var(--cn-ink-muted);
+}
+.theme-dark .markdown-rendered h3,
+.theme-dark .markdown-preview-view h3 { color: var(--cn-accent-strong); }
+
+/* ---------- links ------------------------------------------------------- */
+.markdown-rendered a.internal-link,
+.markdown-preview-view a.internal-link,
+.markdown-source-view a.internal-link {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.markdown-rendered a.external-link,
+.markdown-preview-view a.external-link {
+  text-underline-offset: 2px;
+  background-position: center right;
+}
+
+/* ---------- lists ------------------------------------------------------- */
+.markdown-rendered ul,
+.markdown-preview-view ul { padding-inline-start: 1.5em; }
+.markdown-rendered ol,
+.markdown-preview-view ol { padding-inline-start: 1.7em; }
+.markdown-rendered li::marker,
+.markdown-preview-view li::marker { color: var(--cn-accent-strong); }
+.markdown-rendered li,
+.markdown-preview-view li { margin-block: 0.12em; }
+
+/* ---------- tasks: square cells ---------------------------------------- */
+.markdown-rendered .task-list-item,
+.markdown-preview-view .task-list-item { list-style: none; }
+.markdown-rendered input[type="checkbox"],
+.markdown-preview-view input[type="checkbox"],
+.markdown-source-view input[type="checkbox"] {
+  border-radius: 2px;
+  border-width: 1.5px;
+}
+.markdown-rendered .task-list-item.is-checked,
+.markdown-preview-view .task-list-item.is-checked {
+  color: var(--checklist-done-color);
+  text-decoration: line-through;
+  text-decoration-color: var(--cn-ink-faint);
+}
+
+/* ---------- blockquote: margin aside ----------------------------------- */
+.markdown-rendered blockquote,
+.markdown-preview-view blockquote {
+  border-left: 3px solid var(--cn-accent);
+  border-radius: 0 var(--cn-radius) var(--cn-radius) 0;
+  background: var(--cn-cell);
+  padding: 0.5em 1em;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.markdown-rendered blockquote p:first-child,
+.markdown-preview-view blockquote p:first-child { margin-top: 0; }
+.markdown-rendered blockquote p:last-child,
+.markdown-preview-view blockquote p:last-child { margin-bottom: 0; }
+
+/* ---------- callouts: labelled notebook asides ------------------------- */
+.callout {
+  --callout-radius: var(--cn-radius);
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.5;
+  --callout-padding: 0.75em 1em;
+  --callout-title-size: 0.95em;
+  --callout-title-weight: 700;
+  --callout-content-padding: 0 0 0.1em 0;
+  --callout-blend-mode: normal;
+  border-left-width: 4px;
+  border-left-color: rgb(var(--callout-color));
+}
+.callout .callout-title {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-interface-theme);
+}
+.callout[data-callout="note"] { --callout-color: 224, 164, 88; }
+.callout[data-callout="abstract"],
+.callout[data-callout="summary"],
+.callout[data-callout="tldr"] { --callout-color: 127, 182, 217; }
+.callout[data-callout="info"],
+.callout[data-callout="todo"] { --callout-color: 127, 182, 217; }
+.callout[data-callout="tip"],
+.callout[data-callout="hint"],
+.callout[data-callout="success"],
+.callout[data-callout="check"],
+.callout[data-callout="done"] { --callout-color: 158, 203, 138; }
+.callout[data-callout="question"],
+.callout[data-callout="help"],
+.callout[data-callout="faq"] { --callout-color: 217, 163, 217; }
+.callout[data-callout="warning"],
+.callout[data-callout="caution"],
+.callout[data-callout="attention"] { --callout-color: 224, 164, 88; }
+.callout[data-callout="failure"],
+.callout[data-callout="fail"],
+.callout[data-callout="missing"],
+.callout[data-callout="danger"],
+.callout[data-callout="error"],
+.callout[data-callout="bug"] { --callout-color: 224, 122, 122; }
+.callout[data-callout="example"] { --callout-color: 150, 170, 200; }
+.callout[data-callout="quote"],
+.callout[data-callout="cite"] { --callout-color: 150, 150, 150; }
+
+/* ---------- tables: notebook ledger ------------------------------------ */
+.markdown-rendered table,
+.markdown-preview-view table {
+  border-collapse: collapse;
+  border-top: 2px solid var(--cn-accent);
+  border-bottom: 2px solid var(--cn-accent);
+  font-size: var(--table-text-size);
+}
+.markdown-rendered th,
+.markdown-preview-view th {
+  border-bottom: 1px solid var(--cn-rule);
+  text-align: left;
+}
+.markdown-rendered td,
+.markdown-preview-view td { border-bottom: 1px solid var(--cn-rule); }
+.markdown-rendered tr:last-child td,
+.markdown-preview-view tr:last-child td { border-bottom: none; }
+
+/* ---------- inline & fenced code --------------------------------------- */
+.markdown-rendered code,
+.markdown-preview-view code,
+.cm-inline-code {
+  border: 1px solid var(--cn-rule);
+  border-radius: var(--cn-radius-sm);
+  padding: 0.08em 0.34em;
+  font-size: 0.88em;
+}
+.markdown-rendered pre,
+.markdown-preview-view pre,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-bg,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  background: var(--cn-code-bg);
+}
+.markdown-rendered pre,
+.markdown-preview-view pre {
+  border-left: 3px solid var(--cn-accent);
+  border-radius: 0 var(--cn-radius) var(--cn-radius) 0;
+  padding: 0.85em 1em;
+  line-height: var(--code-line-height);
+}
+.markdown-rendered pre code,
+.markdown-preview-view pre code { border: none; padding: 0; background: transparent; }
+.cm-line.HyperMD-codeblock { border-left: 3px solid var(--cn-accent); }
+
+/* ---------- horizontal rule -------------------------------------------- */
+.markdown-rendered hr,
+.markdown-preview-view hr {
+  border: none;
+  border-top: 1px solid var(--cn-rule);
+  height: 0;
+}
+
+/* ---------- tags ------------------------------------------------------- */
+.markdown-rendered a.tag,
+.markdown-preview-view .tag,
+.cm-hashtag {
+  border-radius: 999px;
+  padding: 0.05em 0.6em;
+  border: 1px solid rgba(224, 164, 88, 0.35);
+}
+.theme-light .markdown-rendered a.tag,
+.theme-light .markdown-preview-view .tag { border-color: rgba(160, 94, 0, 0.35); }
+
+/* ---------- search ----------------------------------------------------- */
+.search-result-file-match,
+.search-result-file-matched-text {
+  background: var(--cn-highlight);
+  color: var(--text-normal);
+}
+.search-input-container input { border-radius: var(--cn-radius-sm); }
+
+/* ---------- settings --------------------------------------------------- */
+.vertical-tab-nav-item.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+.setting-item { border-top: 1px solid var(--background-modifier-border); }
+.setting-item-name { font-weight: 600; }
+
+/* ---------- tabs ------------------------------------------------------- */
+.workspace-tab-header.is-active {
+  box-shadow: inset 0 -2px 0 var(--cn-accent);
+}
+.workspace-tab-header-inner-title { font-family: var(--font-interface-theme); }
+
+/* ---------- navigation ------------------------------------------------- */
+.nav-file-title,
+.nav-folder-title { border-radius: var(--cn-radius-sm); }
+.nav-file-title.is-active { font-weight: 600; }
+
+/* ---------- focus (reachable, visible) --------------------------------- */
+:focus-visible,
+.cm-editor.cm-focused { outline: 2px solid var(--cn-accent-strong); outline-offset: 1px; }
+input:focus, textarea:focus, select:focus { border-color: var(--cn-accent); }
+
+/* ---------- reduced motion --------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+}
