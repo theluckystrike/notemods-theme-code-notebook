@@ -1,7 +1,6 @@
 {
   "name": "Code Notebook",
   "author": "U3 Theme Factory",
-  "version": "1.0.0",
-  "minAppVersion": "1.1.0",
-  "description": "A warm paper-and-ink notebook for code-heavy notes, with amber cells for fenced code."
+  "version": "1.0.1",
+  "minAppVersion": "1.1.0"
 }
